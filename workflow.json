@@ -1,0 +1,101 @@
+{
+  "name": "Fraud Detection Workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "message",
+              "value": "20000 transferred from unknown location at midnight"
+            }
+          ]
+        }
+      },
+      "id": "2",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"message\"]}}",
+              "operation": "contains",
+              "value2": "unknown"
+            },
+            {
+              "value1": "={{$json[\"message\"]}}",
+              "operation": "contains",
+              "value2": "20000"
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "result",
+              "value": "FRAUD ⚠️"
+            }
+          ]
+        }
+      },
+      "id": "4",
+      "name": "Fraud Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [850, 200]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "result",
+              "value": "SAFE ✅"
+            }
+          ]
+        }
+      },
+      "id": "5",
+      "name": "Safe Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [850, 400]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Edit Fields", "type": "main", "index": 0 }]]
+    },
+    "Edit Fields": {
+      "main": [[{ "node": "IF", "type": "main", "index": 0 }]]
+    },
+    "IF": {
+      "main": [
+        [{ "node": "Fraud Result", "type": "main", "index": 0 }],
+        [{ "node": "Safe Result", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}
