@@ -1,0 +1,161 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "29103571-a858-4382-b422-fbf4e53acc4e",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23e84988-c6ae-4d48-a943-2ea988ed2774",
+              "name": "message",
+              "value": "20000 transferred from unknown location at midnight",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "0299e520-f6fc-426b-8b54-9a81fa7eb7c0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f4c08ef6-6d56-48b6-98eb-ad203634c5ec",
+              "leftValue": "={{ $json['message']}}",
+              "rightValue": "unknown",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "724f27fb-aaa3-4593-a8b7-cee342b6119c",
+              "leftValue": "={{ $json['message']}}",
+              "rightValue": "20000",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "1590017f-2cfe-477d-b12b-18e3c9c55886",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b60b3265-c183-400c-93ea-feef74d38cee",
+              "name": "result",
+              "value": "FRAUD",
+              "type": "string"
+            },
+            {
+              "id": "17b6f8cc-ae0b-4fbe-8ccd-80ae079a5078",
+              "name": "result",
+              "value": "SAFE",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        -74.5
+      ],
+      "id": "f695f028-5e0d-47ba-8657-916eb32d4c5a",
+      "name": "Edit Fields1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ef8989ef-0d63-498f-b778-9f43699c341a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5961f38cdbdadf3a07f5e1dcb89536819d9596985c7bc63bf70579b960bf52ea"
+  },
+  "id": "IA9DjdvgJRubb1jT",
+  "tags": []
+}
